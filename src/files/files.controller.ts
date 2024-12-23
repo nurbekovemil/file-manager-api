@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { FilesService } from './files.service';
 import { User } from 'src/users/entities/user.entity';
 import { GetUser } from 'src/auth/get-user.decorator';
+import { CreateFileDto, CreateFolderDto } from './dto/create-file.dto';
 
 @Controller('files')
 @UseGuards(JwtAuthGuard)
@@ -15,22 +16,13 @@ export class FilesController {
   }
 
   @Post('folder')
-  async createFolder(
-    @Body('name') name: string,
-    @Body('path') path: string,
-    @GetUser() user: User,
-  ) {
-    return this.filesService.createFolder(name, path, user);
+  async createFolder(@Body() createFolderDto: CreateFolderDto, @GetUser() user: User) {
+    return this.filesService.createFolder(createFolderDto, user);
   }
 
   @Post('file')
-  async createFile(
-    @Body('name') name: string,
-    @Body('path') path: string,
-    @Body('type') type: string,
-    @Body('size') size: number,
-    @GetUser() user: User,
-  ) {
-    return this.filesService.createFile(name, path, type, size, user);
+  async createFile(@Body() createFileDto: CreateFileDto, @GetUser() user: User) {
+    return this.filesService.createFile(createFileDto, user);
   }
+
 }
